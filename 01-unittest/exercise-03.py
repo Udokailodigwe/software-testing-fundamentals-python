@@ -2,7 +2,7 @@ import time
 import unittest
 
 
-class DatabaseInterface():
+class DatabaseInterface:
     def __init__(self):
         # Connecting to database usually takes time.
         # We are simulating it here using sleep.
