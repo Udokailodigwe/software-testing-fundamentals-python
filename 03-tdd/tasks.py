@@ -25,7 +25,7 @@ class Tasks:
 
     def today(self):
         """Today returns a list of today's tasks"""
-        pass
+        return
 
     def tomorrow(self):
         """Today returns a list of tomorrow's tasks"""

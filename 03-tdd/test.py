@@ -25,3 +25,14 @@ class TestTomorrowTaskList(unittest.TestCase):
         result = task_list.tomorrow()
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].title, "John's birthday")
+
+class TestTodayTaskList(unittest.TestCase):
+    def test_finds_today_tasks(self):
+        task_list = Tasks()
+        #task = Task("Impotant meeting")
+        task_list.add_task(Task("Impotant meeting"))
+        result = task_list.today()
+        print(result[0].title)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].title, "Impotant meeting")
+
