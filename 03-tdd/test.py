@@ -1,6 +1,6 @@
 import unittest
 import datetime
-from .tasks import Task, Tasks
+from tasks import Task, Tasks
 
 
 class TestTomorrowTaskList(unittest.TestCase):
@@ -26,13 +26,11 @@ class TestTomorrowTaskList(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].title, "John's birthday")
 
+
 class TestTodayTaskList(unittest.TestCase):
     def test_finds_today_tasks(self):
         task_list = Tasks()
-        #task = Task("Impotant meeting")
-        task_list.add_task(Task("Impotant meeting"))
+        task_list.add_task(Task("school run"))
         result = task_list.today()
-        print(result[0].title)
         self.assertEqual(len(result), 1)
-        self.assertEqual(result[0].title, "Impotant meeting")
-
+        self.assertEqual(result[0].title, "school run")

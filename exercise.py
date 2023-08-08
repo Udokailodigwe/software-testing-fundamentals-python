@@ -1,4 +1,4 @@
-#simple calculator test
+# simple calculator test
 import unittest
 
 
@@ -15,7 +15,7 @@ class Calculator:
 
     def divide(self, a, b):
         if b == 0:
-            #raise ArithmeticError("number cannot be divided by 0")
+            # raise ArithmeticError("number cannot be divided by 0")
             return False
         return a // b
 
@@ -41,5 +41,5 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(result, 10)
 
     def test_incorrectDivision(self):
-        result = self.calculator.divide(10,0)
+        result = self.calculator.divide(10, 0)
         self.assertFalse(result)

@@ -25,7 +25,8 @@ class Tasks:
 
     def today(self):
         """Today returns a list of today's tasks"""
-        return
+        today = datetime.date.today()
+        return [t for t in self.tasks if t.date == today]
 
     def tomorrow(self):
         """Today returns a list of tomorrow's tasks"""
