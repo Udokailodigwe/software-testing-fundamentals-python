@@ -36,20 +36,28 @@ class Library:
 
     def remove_book(self, book):
         if book.title not in self.books_by_title:
-            return
+            return  #should return false...or should jump out of the check block???
         del self.books_by_title[book.title]
 
     def check_book_status(self, title):
         return (
             title in self.books_by_title and self.books_by_title[title].is_available()
-        )
+        ) #how is isAvailable() accessed when book class object isnt instatiated?
 
     def borrow(self, title):
         if title not in self.books_by_title:
             return f"We do not have {title}. Try something else."
-        return self.books_by_title[title].borrow()
+        return self.books_by_title[title].borrow() #how is borrow() accessed when book class object isnt instatiated?
 
     def return_book(self, title):
         if title not in self.books_by_title:
             return f"We do not have {title}. Try something else."
-        return self.books_by_title[title].return_book()
+        return self.books_by_title[title].return_book() #how is return_book() accessed when book class object isnt instatiated?
+
+
+book = Book("The Jungle", "The Justice")
+library = Library()
+
+is_available = book.is_available()
+print(is_available)
+
