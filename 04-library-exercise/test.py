@@ -48,7 +48,8 @@ class BookBorrowTestCase(unittest.TestCase):
 # Library test case
 
 class LibraryTestCase(unittest.TestCase):
-    library = Library()
+    def setUp(self):
+        self.library = Library()
 
     def test_library_init(self):
         self.assertDictEqual(self.library.books_by_title, {})
@@ -87,3 +88,74 @@ class LibraryTestCase(unittest.TestCase):
         new_book = Book("Thinking fast and slow", "Daniel")
         self.library.add_book(new_book)
         self.assertTrue(self.library.check_book_status(new_book.title))
+
+
+class LibraryBorrowTestCase(unittest.TestCase):
+    def setUp(self):
+        self.library = Library()
+        self.book = Book("The C#", "Mr C# Author", copies=4, available=3)
+        self.another_book = Book("No title", "No author")
+        self.library.add_book(self.book)
+
+    def test_borrow_non_existing_book(self):
+
+        self.assertNotIn("The Python", self.book.title)
+        self.assertEqual(self.library.borrow(self.another_book.title), f"We do not have {self.another_book.title}. Try something else.")
+
+    def test_borrow_book(self):
+        self.book.borrow()
+        self.assertEqual(self.book.available, 2)
+
+    def test_borrow_book_with_multiple_copies(self):
+        self.assertEqual(self.book.copies, 4)
+
+
+class LibraryReturnTestCase(unittest.TestCase):
+    def setUp(self):
+        self.library = Library()
+        self.book = Book("The Grace", "Mr grace Author", copies=10, available=8)
+        self.another_book = Book("No title", "No author")
+        self.library.add_book(self.book)
+
+    def test_impossible_return_book(self):
+        self.assertEqual(self.library.return_book(self.another_book.title), f"We do not have {self.another_book.title}. Try something else.")
+        self.assertGreater(self.book.copies, self.book.available, msg="This is impossible! All the copies are already there.")
+
+
+    def test_return_book(self):
+        self.library.borrow(self.book.title)
+        self.assertEqual(self.book.available, 7)
+
+        # Double return
+        self.library.return_book(self.book.title)
+        self.assertEqual(self.book.return_book(), "Thank you!")
+
+        self.assertEqual(self.book.available, 9)
+        self.assertLess(self.book.available, self.book.copies)
+
+    def test_multiple_return(self):
+        self.library.borrow(self.book.title)
+        self.assertEqual(self.book.available, 7)
+
+        self.library.return_book(self.book.title)
+        self.library.return_book(self.book.title)
+        self.library.return_book(self.book.title)
+        self.assertEqual(self.book.available, 10)
+
+
+def run_book_suite():
+    book_suite = unittest.TestSuite()
+    book_suite.addTest(unittest.TestLoader().loadTestsFromTestCase(BookInitTestCase))
+    book_suite.addTest(unittest.TestLoader().loadTestsFromTestCase(BookBorrowTestCase))
+    book_suite.addTest(unittest.TestLoader().loadTestsFromTestCase(LibraryTestCase))
+    book_suite.addTest(unittest.TestLoader().loadTestsFromTestCase(LibraryBorrowTestCase))
+    book_suite.addTest(unittest.TestLoader().loadTestsFromTestCase(LibraryReturnTestCase))
+    return book_suite
+
+
+test_runner = unittest.TextTestRunner()
+all_suite = run_book_suite()
+test_runner.run(all_suite)
+
+
+
