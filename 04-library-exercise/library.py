@@ -36,7 +36,7 @@ class Library:
 
     def remove_book(self, book):
         if book.title not in self.books_by_title:
-            return
+            return f"The book '{book.title}' does not exist"
         del self.books_by_title[book.title]
 
     def check_book_status(self, title):
