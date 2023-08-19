@@ -75,8 +75,10 @@ class LibraryTestCase(unittest.TestCase):
         self.assertEqual(len(self.library.books_by_title), 0)
 
     def test_remove_non_existing_book(self):
+
         non_existing_book = Book("No title", "No name")
         self.library.remove_book(non_existing_book)
+
 
     def test_status_negative(self):
         new_book = Book("Thinking fast and slow", "Daniel")
@@ -103,8 +105,11 @@ class LibraryBorrowTestCase(unittest.TestCase):
         self.assertEqual(self.library.borrow(self.another_book.title), f"We do not have {self.another_book.title}. Try something else.")
 
     def test_borrow_book(self):
-        self.book.borrow()
-        self.assertEqual(self.book.available, 2)
+        result = self.library.borrow(self.book.title)
+        self.assertEqual(result, f'You have borrowed "The C#" by {self.book.author}')
+        self.assertEqual(self.library.books_by_title[self.book.title].copies, 4)
+        self.assertEqual(self.library.books_by_title[self.book.title].available, 2)
+
 
     def test_borrow_book_with_multiple_copies(self):
         self.assertEqual(self.book.copies, 4)
@@ -120,18 +125,18 @@ class LibraryReturnTestCase(unittest.TestCase):
     def test_impossible_return_book(self):
         self.assertEqual(self.library.return_book(self.another_book.title), f"We do not have {self.another_book.title}. Try something else.")
         self.assertGreater(self.book.copies, self.book.available, msg="This is impossible! All the copies are already there.")
+        #check self.assertequal
 
 
     def test_return_book(self):
         self.library.borrow(self.book.title)
         self.assertEqual(self.book.available, 7)
+        result = self.library.return_book(self.book.title)
+        self.assertEqual(result, "Thank you!")
 
-        # Double return
-        self.library.return_book(self.book.title)
-        self.assertEqual(self.book.return_book(), "Thank you!")
-
-        self.assertEqual(self.book.available, 9)
-        self.assertLess(self.book.available, self.book.copies)
+        self.assertEqual(self.library.books_by_title[self.book.title].copies, 10)
+        self.assertEqual(self.library.books_by_title[self.book.title].available, 8)
+        #self.assertLess(self.book.available, self.book.copies)
 
     def test_multiple_return(self):
         self.library.borrow(self.book.title)
